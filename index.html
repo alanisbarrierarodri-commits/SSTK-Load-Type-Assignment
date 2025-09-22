@@ -1,11 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta http-equiv="refresh" content="0; url='bp_xm3l0.pdf'" />
-<title>Load Type PDF</title>
+  <title>Load Type PDF</title>
+  <script src="https://mozilla.github.io/pdf.js/build/pdf.js"></script>
 </head>
 <body>
-<p>If you are not redirected automatically, <a href="bp_xm3l0.pdf">click here</a>.</p>
+  <canvas id="pdf-canvas"></canvas>
+  <script>
+    var url = 'bp_xm3l0.pdf'; // your PDF
+    var loadingTask = pdfjsLib.getDocument(url);
+    loadingTask.promise.then(function(pdf) {
+      pdf.getPage(1).then(function(page) {
+        var scale = 1.5;
+        var viewport = page.getViewport({scale: scale});
+        var canvas = document.getElementById('pdf-canvas');
+        var context = canvas.getContext('2d');
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
+        var renderContext = { canvasContext: context, viewport: viewport };
+        page.render(renderContext);
+      });
+    });
+  </script>
 </body>
 </html>
